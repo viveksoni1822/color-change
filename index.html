@@ -1,52 +1,280 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Color Changer</title>
-  <style>
-    body {
-      text-align: center;
-      padding-top: 100px;
-      transition: background-color 0.5s;
-      font-family: Arial, sans-serif;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Netflix Clone Homepage</title>
+<style>
+  /* Reset */
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
 
-    button {
-      padding: 15px 30px;
-      font-size: 16px;
-      cursor: pointer;
-      border: none;
-      background-color: #333;
-      color: white;
-      border-radius: 8px;
-      transition: background-color 0.3s;
-    }
 
-    button:hover {
-      background-color: #555;
+  body, html {
+    height: 100%;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #141414;
+    color: white;
+    overflow-x: hidden;
+  }
+
+  /* Background hero image */
+  .hero {
+    position: relative;
+    height: 90vh;
+    background: url('https://images.unsplash.com/photo-1517602302552-471fe67acf66?auto=format&fit=crop&w=1400&q=80') center center / cover no-repeat;
+  }
+
+  /* Gradient overlay for readability */
+  .hero::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(180deg, rgba(20,20,20,0.6) 0%, rgba(20,20,20,0.9) 80%);
+    z-index: 1;
+  }
+
+  /* Navbar */
+  nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 20px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 10;
+    background: rgba(20,20,20,0.7);
+  }
+
+  nav .logo {
+    font-size: 28px;
+    font-weight: 900;
+    color: #e50914;
+    letter-spacing: 2px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+  }
+
+  nav ul li {
+    cursor: pointer;
+    font-weight: 600;
+    transition: color 0.3s ease;
+  }
+
+  nav ul li:hover {
+    color: #e50914;
+  }
+
+  /* Hero content */
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    top: 50%;
+    transform: translateY(-50%);
+    max-width: 600px;
+    padding-left: 40px;
+  }
+
+  .hero-content h1 {
+    font-size: 4rem;
+    font-weight: 900;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.8);
+  }
+
+  .hero-content p {
+    font-size: 1.2rem;
+    line-height: 1.4;
+    margin-bottom: 30px;
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.7);
+  }
+
+  .hero-buttons {
+    display: flex;
+    gap: 15px;
+  }
+
+  .btn {
+    font-weight: 700;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 4px;
+    padding: 12px 30px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.3s ease;
+    user-select: none;
+  }
+
+  .btn-play {
+    background-color: white;
+    color: black;
+  }
+  .btn-play:hover {
+    background-color: #e6e6e6;
+  }
+
+  .btn-list {
+    background-color: rgba(109,109,110,0.7);
+    color: white;
+  }
+  .btn-list:hover {
+    background-color: rgba(109,109,110,0.9);
+  }
+
+  /* Movie rows */
+  .row {
+    margin: 30px 40px 50px 40px;
+  }
+
+  .row h2 {
+    margin-bottom: 15px;
+  }
+
+  .row-posters {
+    display: flex;
+    overflow-x: auto;
+    gap: 10px;
+    scroll-behavior: smooth;
+    padding-bottom: 10px;
+  }
+
+  .row-posters::-webkit-scrollbar {
+    height: 8px;
+  }
+  .row-posters::-webkit-scrollbar-thumb {
+    background: #e50914;
+    border-radius: 4px;
+  }
+
+  .movie-poster {
+    flex: 0 0 auto;
+    width: 150px;
+    max-height: 225px;
+    border-radius: 5px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    object-fit: cover;
+  }
+
+  .movie-poster:hover {
+    transform: scale(1.15);
+    box-shadow: 0 8px 20px rgba(229,9,20,0.7);
+    z-index: 10;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .hero-content h1 {
+      font-size: 2.5rem;
     }
-  </style>
+    .hero-content p {
+      font-size: 1rem;
+      max-width: 90vw;
+    }
+    nav {
+      padding: 15px 20px;
+    }
+    .row {
+      margin: 20px 20px 40px 20px;
+    }
+    .row-posters {
+      gap: 6px;
+    }
+    .movie-poster {
+      width: 110px;
+      max-height: 165px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .btn {
+      padding: 10px 20px;
+      font-size: 1rem;
+    }
+    .hero-buttons {
+      flex-direction: column;
+      gap: 10px;
+      max-width: 200px;
+    }
+  }
+</style>
 </head>
 <body>
-  <h1>🎨 Click to Change Background Color</h1>
-  <button id="changeColorBtn">Change Color</button>
 
-  <script>
-    // Function to generate a random color
-    function getRandomColor() {
-      const r = Math.floor(Math.random() * 256);
-      const g = Math.floor(Math.random() * 256);
-      const b = Math.floor(Math.random() * 256);
-      return `rgb(${r}, ${g}, ${b})`;
-    }
+  <nav>
+    <div class="logo">NETFLIX</div>
+    <ul>
+      <li>Home</li>
+      <li>TV Shows</li>
+      <li>Movies</li>
+      <li>New & Popular</li>
+      <li>My List</li>
+    </ul>
+  </nav>
 
-    // Event Listener for the button
-    const button = document.getElementById('changeColorBtn');
-    button.addEventListener('click', () => {
-      const randomColor = getRandomColor();
-      document.body.style.backgroundColor = randomColor;
-    });
-  </script>
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Stranger Things</h1>
+      <p>A love letter to the '80s classics that captivated a generation, Stranger Things is an unforgettable thriller with supernatural elements and heart.</p>
+      <div class="hero-buttons">
+        <button class="btn btn-play">
+          ▶ Play
+        </button>
+        <button class="btn btn-list">
+          + My List
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="row">
+    <h2>Trending Now</h2>
+    <div class="row-posters">
+      <img class="movie-poster" src="https://image.tmdb.org/t/p/w500/9O7gLzmreU0nGkIB6K3BsJbzvNv.jpg" alt="The Godfather" />
+      <img class="movie-poster" src="https://image.tmdb.org/t/p/w500/xBKGJQsAIeweesB79KC89FpBrVr.jpg" alt="The Dark Knight" />
+      <img class="movie-poster" src="https://image.tmdb.org/t/p/w500/bOGkgRGdhrBYJSLpXaxhXVstddV.jpg" alt="Avengers: Endgame" />
+      <img class="movie-poster" src="https://image.tmdb.org/t/p/w500/8UlWHLMpgZm9bx6QYh0NFoq67TZ.jpg" alt="Wonder Woman 1984" />
+      <img class="movie-poster" src="https://image.tmdb.org/t/p/w500/jdHPTyqzRh5XST6T17Vo2nGZPb9.jpg" alt="Black Panther" />
+      <img class="movie-poster" src="https://image.tmdb.org/t/p/w500/6MKr3KgOLmzOP6MSuZERO41Lpkt.jpg" alt="Interstellar" />
+    </div>
+  </section>
+
+  <section class="row">
+    <h2>Top Rated</h2>
+    <div class="row-posters">
+      <img class="movie-poster" src="https://image.tmdb.org/t/p/w500/rSPw7tgCH9c6NqICZef4kZjFOQ5.jpg" alt="Fight Club" />
+      <img class="movie-poster" src="https://image.tmdb.org/t/p/w500/lIv1QinFqz4dlp5U4lQ6HaiskOZ.jpg" alt="The Shawshank Redemption" />
+      <img class="movie-poster" src="https://image.tmdb.org/t/p/w500/2CAL2433ZeIihfX1Hb2139CX0pW.jpg" alt="Inception" />
+      <img class="movie-poster" src="https://image.tmdb.org/t/p/w500/2tO0WVwR5ggF4RW8gT7t2k9d4z4.jpg" alt="Pulp Fiction" />
+      <img class="movie-poster" src="https://image.tmdb.org/t/p/w500/v5CEa8dQc9SGM9b9tKjn68e0z4F.jpg" alt="The Matrix" />
+      <img class="movie-poster" src="https://image.tmdb.org/t/p/w500/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg" alt="Joker" />
+    </div>
+  </section>
+
+  <section class="row">
+    <h2>Action Movies</h2>
+    <div class="row-posters">
+      <img class="movie-poster" src="https://image.tmdb.org/t/p/w500/87hTDiay2N2qWyX4Ds7ybXi9h8I.jpg" alt="The Dark Knight Rises" />
+      <img class="movie-poster" src="https://image.tmdb.org/t/p/w500/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg" alt="Joker" />
+      <img class="movie-poster" src="https://image.tmdb.org/t/p/w500/bOGkgRGdhrBYJSLpXaxhXVstddV.jpg" alt="Avengers: Endgame" />
+      <img class="movie-poster" src="https://image.tmdb.org/t/p/w500/9O7gLzmreU0nGkIB6K3BsJbzvNv.jpg" alt="The Godfather" />
+      <img class="movie-poster" src="https://image.tmdb.org/t/p/w500/xBKGJQsAIeweesB79KC89FpBrVr.jpg" alt="The Dark Knight" />
+      <img class="movie-poster" src="https://image.tmdb.org/t/p/w500/6MKr3KgOLmzOP6MSuZERO41Lpkt.jpg" alt="Interstellar" />
+    </div>
+  </section>
+
 </body>
 </html>
